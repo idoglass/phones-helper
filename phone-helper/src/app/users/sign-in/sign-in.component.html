@@ -1,1 +1,48 @@
-<p>sign-in works!</p>
+<div class="displayTable">
+    <div class="displayTableCell">
+  
+      <div class="px-logo">
+        <a href="" target="_blank">
+          <img src="assets/budgetLogo.jpg" alt="shmutz icon">
+        </a>
+      </div>
+  
+      <div class="authBlock">
+        <h3>כניסה</h3>
+        <div class="formGroup">
+          <input type="text" class="formControl" placeholder='כתובת דוא"ל' #userName required>
+        </div>
+  
+        <div class="formGroup">
+          <input type="password" class="formControl" placeholder="סיסמה" #userPassword required>
+        </div>
+  
+        <!-- Calling SignIn Api from AuthService -->
+        <div class="formGroup">
+          <input type="button" class="btn btnPrimary" value="כניסה" (click)="authService.SignIn(userName.value, userPassword.value)">
+        </div>
+  
+        <div class="formGroup">
+          <span class="or"><span class="orInner">או</span></span>
+        </div>
+  
+        <!-- Calling GoogleAuth Api from AuthService -->
+        <div class="formGroup">
+          <button type="button" class="btn googleBtn" (click)="authService.GoogleAuth()">
+            <i class="fab fa-google-plus-g"></i>
+           Google היכנס עם חשבון
+          </button>
+        </div>
+  
+        <div class="forgotPassword">
+          <span routerLink="/forgot-password">שכחת סיסמה?</span>
+        </div>
+      </div>
+  
+      <div class="redirectToLogin">
+        <span>עדיין לא נרשמת? פעם ראשונה כאן?<span class="redirect" routerLink="/register-user"> הרשמו</span></span>
+      </div>
+  
+    </div>
+  </div>
+  

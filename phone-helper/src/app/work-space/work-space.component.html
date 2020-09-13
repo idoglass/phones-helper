@@ -1,0 +1,35 @@
+<h2>wellcome</h2>
+
+<mat-card>
+    <div *ngIf="fullUser.workSpace == 'no-workspace'">
+        <h2>no workspace was found</h2>
+        <br>
+        <mat-form-field class="example-full-width">
+            <mat-label>please choose your workSpace</mat-label>
+            <input #pass matInput value="">
+        </mat-form-field>
+        <button (click)=setWorkSpace(pass.value)>go to workspace</button>
+    </div>
+    <div *ngIf="fullUser.workSpace !== 'no-workspace'">
+        <h2>{{workspace.title}}</h2>
+        <br>
+        <mat-form-field class="example-full-width">
+            <mat-label>please choose your workSpace</mat-label>
+            <input #pass matInput value="">
+        </mat-form-field>
+        <button mat-raised-button (click)=setWorkSpace(pass.value)>go to workspace</button>
+    </div>
+</mat-card>
+<mat-card *ngIf="fullUser.workSpace !== 'no-workspace' && campaigns">
+    <mat-card-title>
+        <h3>active campaigns</h3>
+    </mat-card-title>
+    <mat-selection-list #campaign [multiple]="false">
+        <mat-list-option *ngFor="let campaign of campaigns" [value]="campaign.title" [routerLink]="['../campaign',campaign.id]">  
+            
+          <p>
+            <strong>{{campaign.title}}</strong> | {{campaign.discription}}
+          </p>
+        </mat-list-option>
+      </mat-selection-list>
+</mat-card>

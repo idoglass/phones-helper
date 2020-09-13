@@ -1,0 +1,25 @@
+<mat-card>
+    <mat-card-title>
+        create/edit question
+    </mat-card-title>
+    <mat-card-content>
+        <mat-form-field>
+            <mat-label>index</mat-label>
+            <input matInput #postalCode maxlength="2"  [(ngModel)]="qusetion.index">
+          </mat-form-field>
+
+        <mat-form-field class="example-full-width">
+            <mat-label>title</mat-label>
+            <input matInput placeholder="Ex. Pizza" [(ngModel)]="qusetion.title">
+          </mat-form-field>
+          <br>
+          <mat-form-field class="example-full-width">
+            <mat-label>discription</mat-label>
+            <input matInput placeholder="Ex. Pizza" [(ngModel)]="qusetion.discription">
+          </mat-form-field>
+    </mat-card-content>
+    <mat-card-footer>
+        <app-buttons></app-buttons>
+    </mat-card-footer>
+</mat-card>
+

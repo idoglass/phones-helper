@@ -1,1 +1,27 @@
-<p>profile works!</p>
+    <!-- Main content -->
+    <main role="main" class="col-12 px-4">
+        <div class="inner-adjust">
+          <div class="pt-3 pb-2 mb-3 border-bottom">
+            <h1 class="h2">פרטי משתמש</h1>
+          </div>
+          <!-- Show user data when logged in -->
+          <div class="row" *ngIf="authService.userData as user">
+            <div class="col-md-12">
+              <div class="media">
+                <img class="align-self-start ml-5 img-thumbnail rounded-circle" src="{{(user.photoURL) ? user.photoURL : '/assets/dummy-user.png'}}"
+                  alt="{{user.displayName}}">
+                <div class="media-body">
+                  <h1>שלום: <strong>{{ (user.displayName) ? user.displayName : 'User' }}</strong></h1>
+                  <p>מזהה משתמש: <strong>{{ user.uid }}</strong></p>
+                  <p>דוא"ל: <strong>{{ user.email }}</strong></p>
+                  <p>האם הדוא"ל אושר: <strong>{{ user.emailVerified }}</strong></p>
+                  <p>תפקיד: <strong>{{ fullUser.role }}</strong></p>
+                  <p>משטח עבודה: <strong>{{ fullUser.workSpace }}</strong></p>
+
+              </div>
+            </div>
+    </div>
+          </div>
+        </div>
+    </main>
+
