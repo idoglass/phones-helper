@@ -1,2 +1,5 @@
-<button mat-button color="primary">Primary</button>
-    <button mat-button color="accent">Accent</button>
+<button *ngFor="let button of buttons" (click)="editButton(button)" mat-button [style.background]="button.color" color="primary">{{button.title}}</button>
+
+<button mat-icon-button (click)="addButton()"  color="basic">
+    <mat-icon>add</mat-icon>
+</button>

@@ -1,0 +1,42 @@
+<h1 mat-dialog-title>button{{data.title}}</h1>
+<div mat-dialog-content>
+  <p>style your button</p>
+    <mat-form-field class="example-full-width">
+        <mat-label>title</mat-label>
+        <input matInput placeholder="Ex. said yes" [(ngModel)]="data.title">
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <mat-label>toolTip</mat-label>
+        <input matInput placeholder="Ex. click if answer is yes" [(ngModel)]="data.toolTip">
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <mat-label>color</mat-label>
+        <input matInput placeholder="Ex. red" [(ngModel)]="data.color">
+      </mat-form-field>
+      <p>choose what what happans when user click the button</p>
+      <label id="example-radio-group-label">button type</label>
+      <mat-radio-group
+        aria-labelledby="example-radio-group-label"
+        class="example-radio-group"
+        [(ngModel)]="data.type">
+        <mat-radio-button *ngFor="let type of buttonTypes" class="example-radio-button" [value]="type">
+            {{type}}
+        </mat-radio-button>
+      </mat-radio-group>
+        <mat-form-field appearance="fill" *ngIf="data.type=='שנה סטטוס'">
+            <mat-label>status</mat-label>
+            <mat-select [(ngModel)]="data.goTo" required>
+            <mat-option *ngFor="let stat of statuses" [value]="stat">
+                {{stat}}
+            </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field class="example-full-width" *ngIf="data.type=='שאלה אחרת'">
+            <mat-label>index</mat-label>
+            <input matInput placeholder="Ex. 2" [(goTo)]="data.goTo">
+          </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-button [mat-dialog-close]="data" cdkFocusInitial>save</button>
+  <button mat-button [mat-dialog-close]="{button:data,type:'remove'}" cdkFocusInitial>delete</button>
+</div>

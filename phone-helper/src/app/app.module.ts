@@ -23,7 +23,8 @@ import { from } from 'rxjs';
 import { WorkSpaceComponent } from './work-space/work-space.component';
 import { CampaignComponent } from './campaign/campaign.component';
 import { QuestionComponent } from './campaign/question/question.component';
-import { ButtonsComponent } from './campaign/buttons/buttons.component';
+import { ButtonsComponent, addButton } from './campaign/buttons/buttons.component';
+
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { ButtonsComponent } from './campaign/buttons/buttons.component';
     WorkSpaceComponent,
     CampaignComponent,
     QuestionComponent,
-    ButtonsComponent
+    ButtonsComponent,
+    addButton
   ],
   imports: [
     BrowserModule,

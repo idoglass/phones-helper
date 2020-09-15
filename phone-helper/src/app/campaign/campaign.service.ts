@@ -25,6 +25,16 @@ export class CampaignService {
     });
     return ref
   }
+
+  async addQustion(question: Question, workspace:string,campaignID:string) {
+    // convert object of type Employee to JSON object
+    // because Firestore understand JSON
+    const questionObject = {...question};
+    const ref = await this.firestore.collection('workSpace/' + workspace + '/Campaigns/' + campaignID + '/questions').add(questionObject).then(ref => {
+      return  ref.id
+    });
+    return ref
+  }
   // this method returns list of campaigns document,
   // fetched from Firestore database collection
   getCampaigns(workSpace:WorkSpace) {
@@ -58,6 +68,19 @@ export class CampaignService {
   // delete an employee document from the Firestore collection
   deleteCampaign(campaignID: string) {
     this.firestore.doc('Campaigns/' + campaignID).delete();
+  }
+
+  updateQuestion(question: Question, workspace:string,campaignID:string) {
+    // convert object of type Campaign to JSON object
+    // because Firestore understand JSON
+    const questionObject = {...question};
+    this.firestore.doc('workSpace/' + workspace + '/Campaigns/' + campaignID + '/questions/' + question.id).update(questionObject);
+  }
+
+  // this method takes an campaign Id and
+  // delete an employee document from the Firestore collection
+  deleteQuestion(question: Question, workspace:string,campaignID:string) {
+    this.firestore.doc('workSpace/' + workspace + '/Campaigns/' + campaignID + '/questions/' + question.id).delete();
   }
 
 

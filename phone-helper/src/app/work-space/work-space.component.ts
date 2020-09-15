@@ -13,6 +13,7 @@ export class WorkSpaceComponent implements OnInit {
 fullUser:User
 workspace: WorkSpace
 campaigns:Campaign[]
+changeWorkspace:boolean
 
   constructor(public userService: UsersService,public campaignService:CampaignService ) {  
     this.getUser()

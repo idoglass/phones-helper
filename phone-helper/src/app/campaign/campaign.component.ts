@@ -4,6 +4,7 @@ import { UsersService } from '../users/users.service'
 import { User, user, WorkSpace } from '../users/user';
 import { Campaign, Question } from './campaign';
 import { ActivatedRoute } from '@angular/router';
+import { MatGridTileHeaderCssMatStyler } from '@angular/material/grid-list';
 @Component({
   selector: 'app-campaign',
   templateUrl: './campaign.component.html',
@@ -80,5 +81,11 @@ campaignID:string
 
   updateCampaign(campaign:Campaign){
     this.campaignService.updateCampaign(campaign, this.workspace.id)
+  }
+
+  addQuestion(){
+    const index = this.questions.length
+    this.questions.push(new Question)
+    this.questions[index].index = index +1
   }
 }

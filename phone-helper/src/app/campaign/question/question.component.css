@@ -4,3 +4,12 @@
   mat-card {
       margin:0.5rem;
   }
+  .unsaved {
+      background-color: lightsalmon;
+      text-align: center;
+      vertical-align: middle;
+  }
+
+  .example-spacer {
+    flex: 1 1 auto;
+  }

@@ -1,14 +1,17 @@
-<h2>wellcome</h2>
+<h2>wellcome {{fullUser.displayName}}</h2>
 
 <mat-card>
     <div *ngIf="fullUser.workSpace == 'no-workspace'">
         <h2>no workspace was found</h2>
         <br>
-        <mat-form-field class="example-full-width">
-            <mat-label>please choose your workSpace</mat-label>
-            <input #pass matInput value="">
-        </mat-form-field>
-        <button (click)=setWorkSpace(pass.value)>go to workspace</button>
+        <div *ngIf="changeWorkspace">
+            <mat-form-field class="example-full-width">
+                <mat-label>please choose your workSpace</mat-label>
+                <input #pass matInput value="">
+            </mat-form-field>
+            <button (click)=setWorkSpace(pass.value)>go to workspace</button>
+        </div>
+        
     </div>
     <div *ngIf="fullUser.workSpace !== 'no-workspace'">
         <h2>{{workspace.title}}</h2>

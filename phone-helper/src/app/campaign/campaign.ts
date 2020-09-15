@@ -21,7 +21,7 @@ export class Campaign implements Campaign {
     Question:Question[]
 }
 
-enum Satus {
+export enum Status {
     open = "פתוח",
     yes = "כן",
     no = "לא",
@@ -30,7 +30,7 @@ enum Satus {
     noAnswer = "לא ענו",
     wrongNumber = "טעות במספר"
   }
-enum ButtonType {
+export enum ButtonType {
     otherQuestion = "שאלה אחרת",
     changeStatus = "שנה סטטוס"
 }
@@ -40,13 +40,12 @@ export class Question  {
     title:string
     index:number
     discription:string
-    button:Button[]
+    buttons:Button[] = []
 }
 
 export class Button  {
-    id:string
     title:string
-    goTo:string
+    goTo:any
     type:ButtonType
     toolTip:string
     color:string
