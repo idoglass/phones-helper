@@ -2,9 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { CampaignService } from '../campaign/campaign.service'
 import { UsersService } from '../users/users.service'
 import { User, user, WorkSpace } from '../users/user';
-import { Campaign, Question } from './campaign';
+import { Campaign, CustomerStatus, Question } from './campaign';
 import { ActivatedRoute } from '@angular/router';
-import { MatGridTileHeaderCssMatStyler } from '@angular/material/grid-list';
+import { colors } from '../shared/colors'
+import { AuthService } from '../shared/auth.service';
+
+
 @Component({
   selector: 'app-campaign',
   templateUrl: './campaign.component.html',
@@ -13,79 +16,128 @@ import { MatGridTileHeaderCssMatStyler } from '@angular/material/grid-list';
 export class CampaignComponent implements OnInit {
 user:User
 campaign:Campaign
+
 workspace:WorkSpace
-questions:Question[]
+questions:Question[] = []
 campaignID:string
+
+changes:boolean
+savedQuestions:Question[] = []
+newQuestions:Question[] = []
 
   constructor(
     private campaignService:CampaignService,
     public usersService:UsersService,
     private route: ActivatedRoute,
+    private auth:AuthService,
+    private colors:colors,
     ) {
     this.user = new user
-    this.campaign = new Campaign
-    this.getUser()
+    this.campaign = new Campaign()
     
+    this.auth.user$.subscribe(user => {
+      console.log("start")
+      this.user = user;
+      console.log("user")
+      this.setWorkSpace(this.user.workSpace)
+      console.log("setWorkSpace")
+      this.campaignID = this.route.snapshot.paramMap.get('id');
+        if(this.campaignID){
+          this.getCampaign(this.campaignID)
+          console.log("getCampaign")
+        }
+      })
    }
 
-
-   getUser():User {
-      // we call getRecipes() from RecipeService to get list of employees
-      return this.usersService.getFullUserDetails().subscribe(data => {
-        this.user =  {uid:data.payload.id, ...data.payload.data()} as User 
-        this.setWorkSpace(this.user.workSpace)
-      })
-    }  
+ 
 
     setWorkSpace(password:string):WorkSpace{
       return this.usersService.getWorkSpace(password).subscribe(data => {
         this.workspace =  {id:data.payload.id, ...data.payload.data()} as WorkSpace
-        
-        this.campaignID = this.route.snapshot.paramMap.get('id');
-        if(this.campaignID){
-          this.getCampaign(this.campaignID)
-        }
       })
     }
+
     getCampaign(campaignID:string):Campaign {
       // we call getRecipes() from RecipeService to get list of employees
-      return this.campaignService.getCampaign(campaignID,this.workspace.id).subscribe(data => {
+      return this.campaignService.getCampaign(campaignID,this.user.workSpace).subscribe(data => {
         this.campaign =  {id:data.payload.id, ...data.payload.data()} as Campaign 
-        console.log(this.campaign)
         this.getQuestions()
       })
     }  
   ngOnInit(): void {
+  
   }
 
   getQuestions() {
     // we call getRecipes() from RecipeService to get list of employees
-    this.campaignService.getQustions(this.workspace,this.campaignID).subscribe(data => {
-      this.questions = data.map(e => {
+    this.campaignService.getQustions(this.user.workSpace,this.campaignID).subscribe(data => {
+      this.savedQuestions = data.map(e => {
         const object = e.payload.doc.data()
         return {
           id: e.payload.doc.id,
           ...object
         } as Question ;
       });
-      console.log(this.questions)
+      if(this.savedQuestions){this.removeDupicantsQuestions()}
+      
     });
+  }
+  removeDupicantsQuestions(){
+    this.savedQuestions.forEach(savedQuestion => {
+      for (var i =0; i < this.newQuestions.length; i++)
+        if (this.newQuestions[i].index == savedQuestion.index) {
+          this.newQuestions.splice(i,1);
+          console.log("found doup")
+          break;
+          } else {
+            console.log("not found")
+          }
+      })
+      this.questions = [...this.savedQuestions , ...this.newQuestions]
   }
 
   addCampaign(campaign:Campaign){
-    this.campaignService.addCampaign(campaign, this.workspace.id).then(data => {
+    console.log(campaign)
+    this.campaignService.addCampaign(campaign, this.user.workSpace).then(data => {
       this.campaign.id = data
       this.campaignID = data
+      this.addFirstQuestion()
     })
   }
 
   updateCampaign(campaign:Campaign){
-    this.campaignService.updateCampaign(campaign, this.workspace.id)
+    this.campaignService.updateCampaign(campaign, this.user.workSpace)
+    this.changes = false
   }
 
   addQuestion(){
+    if(!this.questions){this.addFirstQuestion()}
     const index = this.questions.length
-    this.questions.push(new Question)
-    this.questions[index].index = index +1
+    this.newQuestions.push(new Question(index+1))
+    this.removeDupicantsQuestions()
+    console.log(this.newQuestions)
+    console.log(this.questions)
   }
+  addFirstQuestion(){
+    const index = 1
+    this.newQuestions = []
+    this.newQuestions.push(new Question)
+    this.newQuestions[0].index = index 
+
+  }
+
+  addstatus(){
+    this.campaign.statusObjList.push({name:'',isClosed:false})
+  }
+
+  deleteStatus(Status:CustomerStatus){
+    this.campaign.statusObjList = this.campaign.statusObjList.filter(item => item !== Status);
+  }
+
+  ischanges(){
+    this.changes = true
+  }
+
+  
 }
+

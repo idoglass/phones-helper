@@ -1,31 +1,62 @@
-<mat-sidenav-container class="sidenav-container">
-  <mat-sidenav #drawer class="sidenav" fixedInViewport
-      [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
-      [mode]="(isHandset$ | async) ? 'over' : 'side'"
-      [opened]="(isHandset$ | async) === false">
-    <mat-toolbar>Menu</mat-toolbar>
+<div class="sidenav-container mat-elevation-z8" color="primary" >
+  <div #drawer class="sidenav" [ngClass]="{'open':openNav,'close':!openNav}" fixedInViewport>
+    <mat-toolbar><mat-icon>support</mat-icon><div [ngClass]="{'hide':!openNav}">Phone Helper</div> </mat-toolbar>
     <mat-nav-list>
-      <a mat-list-item [routerLink]="['profile']">profile</a>
-      <a mat-list-item [routerLink]="['workspace']">workspace</a>
-      <a mat-list-item [routerLink]="['campaign']">campaign</a>
-      <a mat-list-item (click)="authService.SignOut()" >
-        יציאה
-    </a>
+      <a mat-list-item [routerLink]="['workspace']" routerLinkActive="active" [style.color]="workspace ? workspace.color : ''"><mat-icon>work</mat-icon> <div [ngClass]="{'hide':!openNav}" >workspace</div></a>
+      <mat-divider></mat-divider>
+      <a mat-list-item [routerLink]="['call-center']" routerLinkActive="active"><mat-icon>campaign</mat-icon><div [ngClass]="{'hide':!openNav}">call center</div></a>
+      <a mat-list-item [routerLink]="['customers']" routerLinkActive="active"><mat-icon>face</mat-icon><div [ngClass]="{'hide':!openNav}">custumers</div></a>
+      <mat-divider></mat-divider>
+      <a mat-list-item [routerLink]="['reports']" routerLinkActive="active"><mat-icon>bar_chart</mat-icon><div [ngClass]="{'hide':!openNav}">reports</div></a>
+      <a mat-list-item [routerLink]="['logs']" routerLinkActive="active"><mat-icon>history</mat-icon><div [ngClass]="{'hide':!openNav}">call logs</div></a>
+      <a mat-list-item [routerLink]="['users']" routerLinkActive="active"><mat-icon>group</mat-icon><div [ngClass]="{'hide':!openNav}">users</div></a>
+      <a mat-list-item *ngIf="authService.canEdit(user)" [routerLink]="['campaign']" routerLinkActive="active"><mat-icon>add</mat-icon><div [ngClass]="{'hide':!openNav}">create new campaign</div></a>
+      <a mat-list-item [routerLink]="['campaign-list']" routerLinkActive="active"><mat-icon>list</mat-icon><div [ngClass]="{'hide':!openNav}">campaign list</div></a>
+      <mat-divider></mat-divider>
+      <a mat-list-item (click)="openNav = !openNav" routerLinkActive="active" ><mat-icon [ngClass]="{'left':!openNav,'right':openNav}">chevron_left</mat-icon><div [ngClass]="{'hide left':!openNav}"></div></a>
     </mat-nav-list>
-  </mat-sidenav>
-  <mat-sidenav-content>
-    <mat-toolbar color="primary">
-      <button
-        type="button"
-        aria-label="Toggle sidenav"
-        mat-icon-button
-        (click)="drawer.toggle()"
-        *ngIf="isHandset$ | async">
-        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+  </div>
+  <div class="content">
+    <mat-toolbar color="primary" [style.background]="workspace ? workspace.color : ''">
+      <button mat-button [matMenuTriggerFor]="campaignsM">
+        <mat-icon>arrow_drop_down</mat-icon>
+        <small>{{campaignTitle }}</small>
       </button>
-      <span>phone-helper</span>
+      <mat-menu class="menu" #campaignsM="matMenu">
+        <button *ngFor="let campaign of campaigns" (click)="setCurrentCampaign(campaign.id)" mat-stroked-button [color]="campaign.id == user.campaign ? 'accent' : 'basic'">
+        {{campaign.title}}
+      </button>
+      </mat-menu>
+      <span class="example-spacer"></span>
+      <span>{{workspace ? workspace.title : ''}}</span>
+      <span class="example-spacer"></span>
+      <ng-tamplate *ngIf="user">
+       hello, {{ user.displayName }}
+      </ng-tamplate>
+      
+      <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+        <mat-icon>arrow_drop_down
+        </mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item (click)="openSetWorkspaceDialog()">
+          <mat-icon>work</mat-icon>
+          <span>set workspace</span>
+        </button>
+        
+        <mat-divider></mat-divider>
+        <button mat-menu-item [routerLink]="['profile']">
+          <mat-icon>person</mat-icon>
+          <span>profile</span>
+        </button>
+        <button mat-menu-item (click)="authService.SignOut()" >
+          <mat-icon>exit_to_app</mat-icon>
+          <span>exit</span>
+      </button>
+      </mat-menu>
 
+     
     </mat-toolbar>
     <router-outlet></router-outlet>
-  </mat-sidenav-content>
-</mat-sidenav-container>
+  </div>
+</div>

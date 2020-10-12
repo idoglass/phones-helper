@@ -1,0 +1,23 @@
+.float {
+    float: right;
+}
+.d-none {
+    display: none;
+}
+.firstCard {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    
+}
+.text {
+    font-size: 1.5rem;
+    font-weight: bold;
+    width: 100%;
+    text-align: center;
+    align-self: center;
+
+    
+}
+
+

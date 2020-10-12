@@ -14,11 +14,22 @@ export class Campaign implements Campaign {
     id:string
     title:string
     isActive:boolean
-    color:string
+    color:string ="white"
     discription:string
     manager:User
     statusList:string[]
+    statusObjList:CustomerStatus[]
     Question:Question[]
+
+    constructor(){
+        this.isActive = true
+        this.statusObjList = [
+            {name:"פתוח",isClosed:false},
+            {name:"טעות במספר",isClosed:true},
+            {name:"לא ענו",isClosed:false},
+            {name:"זמן אחר",isClosed:false},
+        ]
+    }
 }
 
 export enum Status {
@@ -30,6 +41,13 @@ export enum Status {
     noAnswer = "לא ענו",
     wrongNumber = "טעות במספר"
   }
+
+  export interface CustomerStatus {
+      name:string
+      isClosed:boolean
+
+  }
+
 export enum ButtonType {
     otherQuestion = "שאלה אחרת",
     changeStatus = "שנה סטטוס"
@@ -41,6 +59,9 @@ export class Question  {
     index:number
     discription:string
     buttons:Button[] = []
+    constructor(index?:number){
+        if(index){this.index = index}
+    }
 }
 
 export class Button  {

@@ -37,16 +37,19 @@ export class CampaignService {
   }
   // this method returns list of campaigns document,
   // fetched from Firestore database collection
-  getCampaigns(workSpace:WorkSpace) {
-    console.log(workSpace,"test")
-    this.campaignCollection = this.firestore.collection<Campaign>('workSpace/' + workSpace.id + '/Campaigns', ref => ref.where('isActive', '==', true));
+  getCampaigns(workspaceID:string) {
+    this.campaignCollection = this.firestore.collection<Campaign>('workSpace/' + workspaceID + '/Campaigns', ref => ref.where('isActive', '==', true));
     return this.campaignCollection.snapshotChanges()
   }
 
-  getQustions(workSpace:WorkSpace,campaignID: string) {
-    console.log('workSpace/' + workSpace.id + '/Campaigns/' + campaignID + '/questions' )
+  getAllCampaigns(workspaceID:string) {
+    this.campaignCollection = this.firestore.collection<Campaign>('workSpace/' + workspaceID + '/Campaigns');
+    return this.campaignCollection.snapshotChanges()
+  }
+
+  getQustions(workSpace:string,campaignID: string) {
  
-    this.questionCollection = this.firestore.collection<Question>('workSpace/' + workSpace.id + '/Campaigns/' + campaignID + '/questions' );
+    this.questionCollection = this.firestore.collection<Question>('workSpace/' + workSpace + '/Campaigns/' + campaignID + '/questions', ref => ref.orderBy('index') );
     return this.questionCollection.snapshotChanges()
   }
 
@@ -66,8 +69,8 @@ export class CampaignService {
 
   // this method takes an campaign Id and
   // delete an employee document from the Firestore collection
-  deleteCampaign(campaignID: string) {
-    this.firestore.doc('Campaigns/' + campaignID).delete();
+  deleteCampaign(campaignID: string, workspace:string) {
+    this.firestore.doc('workSpace/'+ workspace +'/Campaigns/'  + campaignID).delete();
   }
 
   updateQuestion(question: Question, workspace:string,campaignID:string) {

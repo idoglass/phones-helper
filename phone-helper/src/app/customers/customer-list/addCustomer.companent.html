@@ -1,0 +1,45 @@
+<mat-card>
+    <mat-card-content>
+        <mat-form-field>
+            <mat-label>first name</mat-label>
+            <input matInput  [(ngModel)]="data.firstName">
+        </mat-form-field>
+
+        <mat-form-field class="example-full-width">
+            <mat-label>last name</mat-label>
+            <input matInput [(ngModel)]="data.lastName">
+        </mat-form-field>
+        <br>
+        <mat-form-field class="example-full-width">
+            <mat-label>phone</mat-label>
+            <input matInput  [(ngModel)]="data.phone">
+        </mat-form-field>
+        <br>
+        <label id="example-radio-group-label">gender</label>
+        <mat-radio-group
+          aria-labelledby="example-radio-group-label"
+          class="example-radio-group"
+          [(ngModel)]="data.gender">
+          <mat-radio-button *ngFor="let gender of genders" class="example-radio-button" [value]="gender">
+              {{gender}}
+          </mat-radio-button>
+        </mat-radio-group>
+        <br>
+          <mat-form-field appearance="outline">
+              <mat-label>status</mat-label>
+              <mat-select [(ngModel)]="data.status" required>
+              <mat-option *ngFor="let stat of statuses" [value]="stat">
+                  {{stat}}
+              </mat-option>
+              </mat-select>
+          </mat-form-field>
+    </mat-card-content>
+    <mat-card-footer>
+        <button mat-button [mat-dialog-close]="data" color="basic">
+            <mat-icon>save</mat-icon> save
+          </button>
+          <button mat-button (click)="onNoClick()" color="basic">
+            <mat-icon >cancel</mat-icon> cancel
+          </button>
+    </mat-card-footer>
+</mat-card>

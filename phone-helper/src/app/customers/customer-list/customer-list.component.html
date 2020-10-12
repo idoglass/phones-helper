@@ -1,1 +1,92 @@
-<p>customer-list works!</p>
+<mat-card *ngIf="user.workSpace !== 'no-workspace' && customers">
+    <mat-toolbar [ngClass]="{'unsaved' : isDouble}" color="accent">
+        <mat-toolbar-row>
+            <span>customers list</span>
+        <span class="example-spacer"></span>
+        <mat-icon *ngIf="isDouble">warning</mat-icon>
+        <span *ngIf="isDouble">{{ duplicants.length}} doplicants </span>
+        <div *ngIf="isDouble">
+            <button mat-raised-button color="basic" (click)="showDouble = !showDouble" *ngIf="!(showDouble && isDouble)">show doplicants</button>
+            <button mat-raised-button color="basic" (click)="showDouble = !showDouble" *ngIf="showDouble  && isDouble">hide doplicants</button>
+        </div>
+ 
+
+        <button mat-raised-button *ngIf="!(import_export)"  (click)="importCustomer()" color="basic">
+            import
+       </button>
+       <button mat-raised-button *ngIf="!(import_export)" color="basic">
+            export
+        </button>
+        <button mat-icon-button (click)="import_export = !import_export"  color="basic">
+          <mat-icon *ngIf="import_export">import_export</mat-icon>
+          <mat-icon *ngIf="!(import_export)">cancel</mat-icon>
+        </button>
+
+       <button mat-icon-button (click)="addCustomer()" color="basic">
+         <mat-icon>add</mat-icon>
+       </button>
+      
+   
+
+        </mat-toolbar-row>
+        
+        <mat-toolbar-row *ngIf="showDouble  && isDouble">
+            <span >you have {{ duplicants.length}} doplicants</span>
+            
+            <span class="example-spacer"></span>
+            <button mat-raised-button (click)="deleteDupCustomer()"  color="accent">
+                <mat-icon>delete</mat-icon>
+                <span> delete {{ selected.length }} selected</span>  
+              </button>
+              
+        </mat-toolbar-row>
+    </mat-toolbar>
+   
+       
+       <mat-card-content>
+
+
+        <mat-selection-list #d [multiple]="true" *ngIf="showDouble  && isDouble">
+            <div mat-subheader>list of duplicants</div>
+            <div *ngFor="let customer of duplicants" class="flex">
+                <mat-divider *ngIf="customer.status == 'addDivider'"></mat-divider>
+                <mat-list-option [checkboxPosition]='before' (click)="setSelected(d.selectedOptions.selected)"  [value]="customer" >  
+                    <div>
+                      <strong>{{ customer.firstName }} {{ customer.lastName }}</strong> {{ customer.phone }} {{ customer.gender }}
+                    </div>
+                    
+              </mat-list-option>
+              <span class="example-spacer"></span> 
+                      <button mat-icon-button (click)="deleteCustomer(customer.id)"  color="basic">
+                          <mat-icon>delete</mat-icon>
+                        </button>
+            </div>
+            <br>
+          <mat-divider></mat-divider>
+<br>
+          </mat-selection-list>
+
+    <mat-selection-list #campaign [multiple]="false">
+        <div mat-subheader>all customers </div>
+        <div *ngFor="let customer of customers" class="flex">
+            <mat-list-option  [value]="customer.firstName" [routerLink]="['../customer',customer.id]">  
+                <div>
+                  <strong>{{ customer.firstName }} {{ customer.lastName }}</strong> {{ customer.phone }} {{ customer.status }}
+                </div>
+                
+          </mat-list-option>
+          <span class="example-spacer"></span> 
+                  <button mat-icon-button (click)="deleteCustomer(customer.id)"  color="basic">
+                      <mat-icon>delete</mat-icon>
+                    </button>
+                    <button mat-icon-button (click)="editCustomer(customer)"  color="basic">
+                      <mat-icon>edit</mat-icon>
+                    </button>
+                    <button mat-mini-fab  color="primary">
+                      <mat-icon>phone</mat-icon>
+                    </button>
+        </div>
+        
+      </mat-selection-list>
+       </mat-card-content>
+</mat-card>

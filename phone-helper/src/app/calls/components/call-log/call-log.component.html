@@ -1,0 +1,35 @@
+<mat-card >
+    <mat-card-title>
+        <h1>Chat History</h1>
+    </mat-card-title>
+    <mat-card-content  *ngIf="pastMessagesList && messagesList"  >
+        <ng-tamplate >
+            <div class="message-container"  #content >
+                <ng-tamplate *ngFor="let log of pastMessagesList">
+                  <div [ngClass]="(log.sender==user.displayName)?'sent':'received'">
+                    <div class="hour" [ngClass]="(log.sender==user.displayName)?'sent':'received'">{{log.date.toDate() | date :'short'}} | {{log.sender}}</div>
+                    <p   [ngClass]="(log.sender==user.displayName)?'sent-bubble':'received-bubble'">
+                     {{log.title}}
+                    </p>
+                    <p *ngIf="log.discription"  [ngClass]="(log.sender==user.displayName)?'sent-bubble':'received-bubble'">
+                      {{log.discription}}
+                     </p>
+                  </div>
+                </ng-tamplate>
+ 
+        <h3><span class="date">This Call</span></h3>
+          <ng-tamplate *ngFor="let log of messagesList">
+            <div [ngClass]="(log.sender==user.displayName)?'sent':'received'">
+              <div class="hour">{{log.date | date :'short'}} | {{log.sender}}</div>
+              <p   [ngClass]="(log.sender==user.displayName)?'sent-bubble':'received-bubble'">
+               {{log.title}}
+              </p>
+              <p *ngIf="log.discription"  [ngClass]="(log.sender==user.displayName)?'sent-bubble':'received-bubble'">
+                {{log.discription}}
+               </p>
+            </div>
+          </ng-tamplate>
+      </div>
+    </ng-tamplate>
+    </mat-card-content>
+</mat-card>

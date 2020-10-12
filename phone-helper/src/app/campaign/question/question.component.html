@@ -1,7 +1,6 @@
 <mat-card>
-  <mat-card-header [ngClass]="{'unsaved' : changes}" ></mat-card-header>
     <mat-toolbar [ngClass]="{'unsaved' : changes}" color="accent">
-     <span>{{title}} question</span>
+     <span>{{title}} question {{qusetion.index}}</span>
      <span class="example-spacer"></span>
      <span *ngIf="changes">unsaved changes</span>
      <button mat-icon-button (click)=deleteQuestion(qusetion) *ngIf="qusetion.id" color="basic">
@@ -21,7 +20,7 @@
     <mat-card-content>
         <mat-form-field>
             <mat-label>index</mat-label>
-            <input matInput #postalCode maxlength="2"  (keyup)="setChanges()" [(ngModel)]="qusetion.index">
+            <input matInput #postalCode maxlength="2"  (keyup)="setChanges()" [(ngModel)]="qusetion.index" disabled>
           </mat-form-field>
 
         <mat-form-field class="example-full-width">
@@ -35,7 +34,7 @@
           </mat-form-field>
     </mat-card-content>
     <mat-card-footer>
-        <app-buttons (newChangeEvent)="setChanges($event)" [buttons]="qusetion.buttons"></app-buttons>
+        <app-buttons (newChangeEvent)="setChanges($event)" [buttons]="qusetion.buttons" [campaign]="campaign"></app-buttons>
     </mat-card-footer>
 </mat-card>
 

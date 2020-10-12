@@ -1,0 +1,24 @@
+<mat-card>
+    <mat-card-title>
+        please select user role
+    </mat-card-title>
+    <br>
+    <mat-form-field >
+        <mat-label>user role</mat-label>
+        <mat-select [(ngModel)]="data.roles">
+        <mat-option value="user" >user</mat-option>
+        <mat-option value="campaign manager" >campaign manager</mat-option>
+        <mat-option value="campaign editor" >campaign editor</mat-option>
+        <mat-option value="admin" >admin</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <br>
+      <mat-card-footer>
+        <button mat-button [mat-dialog-close]="data" color="basic">
+            <mat-icon>save</mat-icon> save
+          </button>
+          <button mat-button (click)="onNoClick()" color="basic">
+            <mat-icon >cancel</mat-icon> cancel
+          </button>
+    </mat-card-footer>
+</mat-card>

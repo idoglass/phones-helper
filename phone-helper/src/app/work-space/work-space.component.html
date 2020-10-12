@@ -1,10 +1,9 @@
-<h2>wellcome {{fullUser.displayName}}</h2>
-
-<mat-card>
+<mat-card [style.background]="workspace.color" >
     <div *ngIf="fullUser.workSpace == 'no-workspace'">
         <h2>no workspace was found</h2>
+        please set your workspace
         <br>
-        <div *ngIf="changeWorkspace">
+        <div *ngIf="true">
             <mat-form-field class="example-full-width">
                 <mat-label>please choose your workSpace</mat-label>
                 <input #pass matInput value="">
@@ -13,26 +12,81 @@
         </div>
         
     </div>
-    <div *ngIf="fullUser.workSpace !== 'no-workspace'">
-        <h2>{{workspace.title}}</h2>
-        <br>
-        <mat-form-field class="example-full-width">
-            <mat-label>please choose your workSpace</mat-label>
-            <input #pass matInput value="">
-        </mat-form-field>
-        <button mat-raised-button (click)=setWorkSpace(pass.value)>go to workspace</button>
-    </div>
-</mat-card>
-<mat-card *ngIf="fullUser.workSpace !== 'no-workspace' && campaigns">
-    <mat-card-title>
-        <h3>active campaigns</h3>
-    </mat-card-title>
-    <mat-selection-list #campaign [multiple]="false">
-        <mat-list-option *ngFor="let campaign of campaigns" [value]="campaign.title" [routerLink]="['../campaign',campaign.id]">  
+    <div>
+        <h1>your work space</h1>
+        <section class="header">
+            <mat-card >
+                <mat-card-header >
+                    <mat-card-title>
+                        {{workspace.title}}
+                   </mat-card-title>
+                   <mat-card-subtitle>
+                    {{workspace.discription}}
+                   </mat-card-subtitle>
+                   <img mat-card-sm-image src="https://firebasestorage.googleapis.com/v0/b/my-phone-helper.appspot.com/o/%D7%94%D7%95%D7%A8%D7%93%D7%94.png?alt=media&token=67bf0480-a575-4e49-917c-494ad7a88b62">
+                </mat-card-header>
+                
+            </mat-card>
+        </section>
+
+        <mat-divider></mat-divider>
+        <h1 >your current campaign</h1>
+        <section class="content" *ngIf="campaign" [style.background]="campaign.color">
             
-          <p>
-            <strong>{{campaign.title}}</strong> | {{campaign.discription}}
-          </p>
-        </mat-list-option>
-      </mat-selection-list>
+            <mat-card >
+                <mat-card-title >
+                     {{campaign.title}}
+                </mat-card-title>
+                <mat-card-content>
+                    {{campaign.discription}}
+                </mat-card-content>
+            </mat-card>
+            <mat-card>
+                <mat-card-title>
+                    start calling
+                </mat-card-title>
+                <mat-card-content>
+                    <button mat-raised-button  [routerLink]="['../call-center']" color="primary">
+                        <mat-icon>call</mat-icon>
+                        start campaign
+                      </button>
+                      <button mat-button  [routerLink]="['../customers']" color="basic">
+                        <mat-icon>call</mat-icon>
+                        call specific customer
+                      </button>
+                </mat-card-content>
+            </mat-card>
+            <mat-card>
+                stat
+            </mat-card>
+        </section>
+        
+        <mat-divider></mat-divider>
+        <h1>all active campaign</h1>
+        <section class="content" *ngIf="fullUser.workSpace !== 'no-workspace' && campaigns">
+            <mat-card *ngFor="let campaign of campaigns" >
+                <mat-card-header>
+                    <mat-card-title>
+                      {{campaign.title}}
+                      <button mat-icon-button class="more-button" [matMenuTriggerFor]="menu" aria-label="Toggle menu">
+                        <mat-icon>more_vert</mat-icon>
+                      </button>
+                      <mat-menu #menu="matMenu" xPosition="before">
+                        <button mat-menu-item (click)="unActiveCampaign(campaign)">Not Active</button>
+                        <button mat-menu-item [routerLink]="['../campaign',campaign.id]">Edit</button>
+                        <button mat-menu-item (click)="deleteCampaign(campaign)">Delete</button>
+                      </mat-menu>
+                    </mat-card-title>
+                  </mat-card-header>
+                <mat-card-content>
+                    <p>
+                        {{campaign.discription}}
+                      </p>
+                </mat-card-content>
+                <mat-card-actions>
+                    <button mat-raised-button (click)="setCurrentCampaign(campaign.id)" [style.background]="campaign.color">join</button>
+                </mat-card-actions>
+            </mat-card>
+        </section>
+    </div>
 </mat-card>

@@ -4,3 +4,15 @@
   mat-card {
     margin:0.5rem;
 }
+button {
+  margin: 0.5rem;
+}
+mat-card-title, mat-list-item {
+  display: flex;
+}
+
+.unsaved {
+  background-color: lightsalmon;
+  text-align: center;
+  vertical-align: middle;
+}

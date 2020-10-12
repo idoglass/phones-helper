@@ -1,33 +1,121 @@
-<mat-card>
+ <mat-card *ngIf="!(campaign.id)">
     <mat-card-title>
-        <h1>create campaign</h1>
+      <h1>Create New Campaign</h1>
     </mat-card-title>
     <mat-card-content>
         <mat-form-field class="example-full-width">
-            <mat-label>title</mat-label>
-            <input matInput placeholder="Ex. Pizza" [(ngModel)]="campaign.title">
+            <mat-label>Campaign title</mat-label>
+            <input matInput placeholder="Ex. Recruite new volentirs" [(ngModel)]="campaign.title" >
+            <mat-hint>must be longer then 2 letters</mat-hint>            
         </mat-form-field>
-        <br>
-        <mat-checkbox class="example-margin" [(ngModel)]="campaign.isActive" >is active</mat-checkbox>
-        <br>
-        <mat-form-field class="example-full-width">
-            <mat-label>color</mat-label>
-            <input matInput placeholder="Ex. Pizza" [(ngModel)]="campaign.color">
-        </mat-form-field>
-        <br>
-        <mat-form-field class="example-full-width">
-            <mat-label>discription</mat-label>
-            <textarea matInput [(ngModel)]="campaign.discription" placeholder="Ex. It makes me feel..."></textarea>
-        </mat-form-field>
+
     </mat-card-content>
     <mat-card-footer>
-        <button mat-button (click)="addCampaign(campaign)"  *ngIf="!(campaign.id)" color="primary">add</button>
-        <button mat-button (click)="updateCampaign(campaign)" *ngIf="campaign.id" color="primary">save</button>
-        <button mat-button (click)="addQuestion()" color="primary">add question</button>
+      <button mat-raised-button (click)="addCampaign(campaign)"  *ngIf="!(campaign.id)" color="primary" [disabled]="campaign.title && campaign.title.length > 2 ? false : true">add</button>
     </mat-card-footer>
 </mat-card>
 
+<mat-tab-group *ngIf="campaign.id" >
+    <mat-tab label="settings">
+      <ng-template matTabContent>
+        <mat-card>
+          <mat-card-title>
+            <mat-toolbar [ngClass]="{'unsaved' : changes}" color="accent">
+              <span>edit campaign</span>
+              <span class="example-spacer"></span>
+              <span *ngIf="changes">unsaved changes</span>
+              <button mat-icon-button (click)="updateCampaign(campaign)" *ngIf="campaign.id" color="basic">
+              <mat-icon>save</mat-icon>
+            </button>
+            </mat-toolbar>
+          </mat-card-title>
+          <mat-card>
+              <mat-card-title>
+                <span>Campaign Details</span>
+              </mat-card-title>
+              <mat-card-content>
+                  <mat-form-field class="example-full-width">
+                      <mat-label>title</mat-label>
+                      <input matInput placeholder="Ex. Pizza" [(ngModel)]="campaign.title" (ngModelChange)="ischanges()">
+                  </mat-form-field>
+                  <br>
+                  <mat-checkbox class="example-margin" [(ngModel)]="campaign.isActive" (ngModelChange)="ischanges()">is active</mat-checkbox>
+                  <br>
+                  <mat-form-field class="example-full-width">
+                      <input type="text"
+                            placeholder="Pick color"
+                            aria-label="Number"
+                            matInput
+                            [(ngModel)]="campaign.color"
+                            [matAutocomplete]="auto">
+                      <mat-autocomplete #auto="matAutocomplete">
+                        <mat-option *ngFor="let option of colors.options" [value]="option" [style.background]="option">
+                          {{option}}
+                        </mat-option>
+                      </mat-autocomplete>
+                    </mat-form-field>
+                  <br>
+                  <mat-form-field class="example-full-width">
+                      <mat-label>discription</mat-label>
+                      <textarea matInput [(ngModel)]="campaign.discription" (ngModelChange)="ischanges()" placeholder="Ex. It makes me feel..."></textarea>
+                  </mat-form-field>
+              </mat-card-content>
+              <mat-card-footer>
+                  
+    
+              </mat-card-footer>
+          </mat-card>
+          <mat-card>
+            <mat-card-title>
+              <span>Status List</span>
+              <span class="example-spacer"></span>
+              <button mat-raised-button (click)="addstatus()">Add Status</button>
+            </mat-card-title>
+            <mat-card-content>
+              <mat-list>
+                <mat-list-item *ngFor="let status of campaign.statusObjList" class="haight"> 
+                    <input matInput placeholder="Ex. no answer" [(ngModel)]="status.name" (ngModelChange)="ischanges()" >        
+                    <span class="example-spacer"></span>
+                      <mat-slide-toggle [(ngModel)]="status.isClosed" (ngModelChange)="ischanges()">call customer</mat-slide-toggle>
+                      <button mat-icon-button  color="basic" (click)="deleteStatus(status)">
+                        <mat-icon>delete</mat-icon>
+                      </button>
+                </mat-list-item>
+              </mat-list>
+            </mat-card-content>
+          </mat-card>
+        </mat-card>
+        </ng-template>
+      </mat-tab>
+      <mat-tab label="questions">
+        <ng-template matTabContent>
+          <mat-card>
+              <mat-card-title>
+                  <button mat-raised-button (click)="addQuestion()" color="primary">add question</button>
+              </mat-card-title>
+          <div *ngFor="let qusetion of questions">
+              <app-question  [qusetion]="qusetion" [workspace]="workspace.id" [campaignID]="campaignID" [campaign]="campaign"></app-question>
+          </div>
+      </mat-card>
+        </ng-template>
+      </mat-tab>
+      <mat-tab label="customers">
+        <ng-template matTabContent>
+          <app-customer-list [campaignID]="campaignID"></app-customer-list>
+        </ng-template>
+      </mat-tab>
+      <mat-tab label="pages">
+          <ng-template matTabContent>
+              <mat-card>
+                  under construction
+              </mat-card>
+        </ng-template>
+      </mat-tab>
+  </mat-tab-group>
 
-    <div *ngFor="let qusetion of questions">
-        <app-question  [qusetion]="qusetion" [workspace]="workspace.id" [campaignID]="campaignID"></app-question>
-    </div>
+
+
+
+
+
+    

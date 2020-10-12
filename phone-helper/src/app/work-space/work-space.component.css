@@ -1,3 +1,21 @@
 mat-card {
     margin: 0.5rem;
 }
+section.content{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+section.content mat-card {
+    flex: 1 1 30%;
+}
+section.header mat-card mat-card-header{
+    display: flex;
+    justify-content: space-between;
+}
+
+.more-button {
+    position: absolute;
+    top: 5px;
+    right: 10px;
+  }

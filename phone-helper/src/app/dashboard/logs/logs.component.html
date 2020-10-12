@@ -1,0 +1,17 @@
+<mat-card>
+    <mat-card-title>
+        <div>
+            logs history
+        </div>
+        
+        <div>
+            <button mat-button [matMenuTriggerFor]="menu" color="accent">Choose campaign</button>
+            <mat-menu #menu="matMenu">
+                <button mat-menu-item *ngFor="let campaign of campaigns" (click)="changeCampaign(campaign.id)">{{campaign.title}}</button>
+            </mat-menu>
+        </div>
+    </mat-card-title>
+    
+    
+    <app-table-view [DATA]="logs" [lastColumn]="6"></app-table-view>
+</mat-card>

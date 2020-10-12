@@ -4,7 +4,8 @@ import { auth } from 'firebase/app';
 import { AngularFireAuth } from "@angular/fire/auth";
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
 import { Router } from "@angular/router";
-import { Observable, Subject } from 'rxjs';
+import { Observable, Subject, of } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 import { UsersService } from '../users/users.service';
 
 @Injectable({
@@ -13,7 +14,8 @@ import { UsersService } from '../users/users.service';
 
 export class AuthService {
   userData: any; // Save logged in user data
-  
+  user$: Observable<User>;
+
   public toggleUserStatus$ = new Subject<boolean>();
 
   public isLogged = false;
@@ -38,17 +40,26 @@ export class AuthService {
         JSON.parse(localStorage.getItem('user'));
       }
     })
+
+    //// Get auth data, then get firestore user document || null
+    this.user$ = this.afAuth.authState.pipe(
+    switchMap(user => {
+      if (user) {
+        return this.afs.doc<User>(`users/${user.uid}`).valueChanges() 
+      } else {
+        return of(null)
+      }
+    })
+    ) 
   }
 
 
   public toggleUser(): void {
     const user: User = JSON.parse(localStorage.getItem('user'));
-    console.log('Im inside toggle');
     this.toggleUserStatus$.next((user !== null && user.emailVerified !== false) ? true : false);
   }
 
   public getIsLoggedIn(): Observable<boolean> {
-    console.log('Im inside getIsOpen');
     // return of(this.isOpen);
     return this.toggleUserStatus$.asObservable();
   }
@@ -137,8 +148,9 @@ export class AuthService {
       displayName: user.displayName,
       photoURL: user.photoURL,
       emailVerified: user.emailVerified,
-      role: "user",
-      workSpace: "no-workspace"
+      roles: {"user":true},
+      workSpace: "no-workspace",
+      campaign: ""
     }
     return userRef.set(userData, {
       merge: true
@@ -163,4 +175,35 @@ export class AuthService {
       this.toggleUser()
     })
   }
+
+///// Role-based Authorization //////
+
+canRead(user: User): boolean {
+  const allowed = ['admin', 'campaign manager', 'user']
+  return this.checkAuthorization(user, allowed)
+}
+
+canEdit(user: User): boolean {
+  const allowed = ['admin', 'campaign manager']
+  return this.checkAuthorization(user, allowed)
+}
+ 
+canDelete(user: User): boolean {
+  const allowed = ['admin']
+  return this.checkAuthorization(user, allowed)
+}
+
+
+
+// determines if user has matching role
+private checkAuthorization(user: User, allowedRoles: string[]): boolean {
+  if (!user) return false
+  for (const role of allowedRoles) {
+    if ( user.roles[role] ) {
+      return true
+    }
+  }
+  return false
+}
+
 }

@@ -44,5 +44,12 @@ uid:string
     updateUser(user:User){
       this.afs.collection<User>('users').doc(user.uid).update(user);
     }
+
+    public getUsers(workspaceID:string) {
+      this.usercollction = this.afs.collection<User>('users/', ref => ref
+      .where('workSpace', '==', workspaceID));
+      return this.usercollction.snapshotChanges()
+    }
+  
   }
 

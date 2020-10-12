@@ -4,8 +4,9 @@ export interface User {
     displayName: string;
     photoURL: string;
     emailVerified: boolean;
-    role: string;
+    roles: Roles;
     workSpace: string
+    campaign:string
  }
 
  export class user implements User {
@@ -14,8 +15,9 @@ export interface User {
     displayName: string;
     photoURL: string;
     emailVerified: boolean;
-    role: string;
+    roles: Roles
     workSpace: string
+    campaign:string
  }
 
  export interface WorkSpace {
@@ -33,3 +35,9 @@ export interface User {
     img: string;
     discription: boolean;
  }
+
+ export interface Roles { 
+   user?: boolean;
+   editor?: boolean;
+   admin?: boolean;
+}

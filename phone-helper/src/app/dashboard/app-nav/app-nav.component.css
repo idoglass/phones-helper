@@ -1,9 +1,57 @@
 .sidenav-container {
   height: 100%;
+  display: flex;
+  background: #e0e0e0;
+}
+.content{
+  width: 100%;
+  background: white;
+}
+.active{
+  background: darkslategrey !important;
+  color: whitesmoke;
 }
 
-.sidenav {
-  width: 200px;
+::ng-deep .left {
+  float: right !important;
+  transform: rotate( -180deg );            
+    transition: transform 200ms ease;
+}
+::ng-deep .right {
+  float: right !important;
+         
+    transition: transform 200ms ease;
+}
+::ng-deep .menu .mat-menu-content {
+  display: flex;
+  flex-direction: column;
+
+}
+::ng-deep .menu .mat-menu-content button {
+ margin: 0.25rem 0.5rem ;
+
+}
+
+::ng-deep .mat-menu-panel {
+  min-width: 112px;
+  max-width: unset !important;
+   overflow: visible !important;
+}
+.sidenav.open {
+
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  transition: width .3s cubic-bezier(0.4, 0, 0.2, 1);
+  width: 256px;
+}
+
+.sidenav.close {
+  width: 58px;
+  transition: 0.5s ease-in-out;
+}
+.hide {
+  display: none;
 }
 
 .sidenav .mat-toolbar {
@@ -14,4 +62,11 @@
   position: sticky;
   top: 0;
   z-index: 1;
+}
+
+mat-menu {
+  direction: rtl;
+}
+mat-icon {
+  margin-right: 0.5rem;
 }

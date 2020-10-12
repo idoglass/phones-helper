@@ -1,0 +1,12 @@
+<mat-card>
+    <mat-card-title>
+        <div>
+            customers
+        </div>
+        
+
+    </mat-card-title>
+    
+    
+    <app-table-view [DATA]="users" [lastColumn]="6" [buttons]="['admin_panel_settings','delete','chat']" (buttonClickedEvent)="buttonClicked($event)"></app-table-view>
+</mat-card>

@@ -15,6 +15,8 @@ qusetion:Question
 workspace:string
 @Input()
 campaignID:string
+@Input()
+campaign:Campaign
 
 title:string
 changes:boolean
@@ -22,7 +24,6 @@ changes:boolean
   constructor(public campaignService:CampaignService) { }
 
   ngOnInit(): void {
-    console.log(this.qusetion)
     if (this.qusetion.id){
       this.title = "edit"
       this.changes = false
@@ -34,7 +35,6 @@ changes:boolean
   }
 
   updateQuestion(question:Question){
-    console.log(question)
     this.campaignService.updateQuestion(question,this.workspace,this.campaignID)
     this.changes = false
   }
@@ -52,6 +52,5 @@ changes:boolean
   setChanges(event?:boolean){
 
     this.changes = true
-    console.log(this.changes,"change?",event)
   }
 }

@@ -1,0 +1,37 @@
+<mat-card class="firstCard" *ngIf="!(customer)">
+ <div class="text">
+    {{ problemText }}
+ </div>
+</mat-card>
+<mat-card *ngIf="customer">
+    <mat-card-title>
+        <h2>{{customer.firstName}}</h2>
+    </mat-card-title>
+    <mat-card *ngFor="let question of currentQuestions">
+        <mat-card-title>
+            {{question.title}} 
+            <button mat-button
+                    class="float"
+                    *ngIf="isLastQuestion(question.index)"
+                    [matTooltip]="'go back to previus question'"
+                    (click)="goBack(question)"
+                    [ngClass]="{'d-none':question.index == 1}"
+                    color="warn">
+                    <mat-icon>undo</mat-icon>
+                    back 
+                    </button>
+        </mat-card-title>
+        <mat-card-content>
+            {{question.discription}}
+        </mat-card-content>
+        <mat-card-actions>
+            <button mat-button *ngFor="let button of question.buttons" 
+                    (click)="buttonClicked(button)" 
+                    [matTooltip]="button.toolTip"
+                    [style.background]="button.color"
+                    color="primary"
+                    [disabled]="!(isLastQuestion(question.index))">
+                    {{button.title}}</button>
+        </mat-card-actions>
+    </mat-card>
+</mat-card>

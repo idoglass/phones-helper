@@ -1,0 +1,43 @@
+<mat-card [style.background]="campaign.color">
+    <h1>{{campaign.title}}</h1>
+</mat-card>
+<section class="header">
+    <button mat-raised-button (click)="getRandCustomer()" color="primary" class="pulse">
+        <mat-icon>call</mat-icon>
+        start call
+      </button>
+    <div>
+        <button  mat-raised-button  (click)="toggle('help')" color="basic">
+            <mat-icon>info</mat-icon>
+            Help
+          </button>
+          <button mat-raised-button (click)="toggle('customer')" color="basic">
+            <mat-icon>person</mat-icon>
+            Customer Details
+          </button>
+          <button mat-raised-button (click)="toggle('log')"  color="basic">
+            <mat-icon>chat</mat-icon>
+            Chat history
+          </button>
+    </div>
+    
+    
+      
+</section>
+
+  <section>
+      <main>
+        <app-call [questions]="questions" [campaign]="campaign" [customer]="customer" [user]="user" (logsChanged)="sendLog($event)"></app-call>
+      </main>
+      <article  [ngClass]="toggleHelp ? 'show' : 'hide'">
+        <app-call-help></app-call-help>
+      </article>
+      <article [ngClass]="toggleCustomer ? 'show' : 'hide'">
+        <app-customer [customer]="customer" [user]="user" ></app-customer>
+      </article>
+      <article [ngClass]="toggleLog ? 'show' : 'hide'">
+          <app-call-log [logs]="logs" [customer]="customer" [user]="user"></app-call-log>
+      </article>
+  </section>
+
+
